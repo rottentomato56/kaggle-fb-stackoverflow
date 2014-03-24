@@ -1,0 +1,21 @@
+ def mapper(self, _, line):
+    self.increment_counter('group', 'post_count', 1)
+    if random.random() <= .01:
+      # this generates a random subset of testing data to judge performance
+      self.intesting_file.write(line +'\n')
+      yield ('emptylineplaceholder', (1, 1, [('emptytag', 1, 1)]))
+    
+    else:
+      post_sections = line.strip().split('\t')
+      
+      post_id = post_sections[0]
+      if len(post_sections) < 4:
+        # if the post_sections list is missing parts of the post, then most likely it does not have title tokens
+        title_tokens = []
+        body_tokens = post_sections[1].split(',')
+        tags = post_sections[2].split(',') 
+        
+      else:
+        title_tokens = post_sections[1].split(',')
+        body_tokens = post_sections[2].split(',')
+        tags = post_sections[3].split(',')
